@@ -1,6 +1,6 @@
 # Purugly Sandbox
 
-The project is forked from codesandbox compiling and transpiling the code runtime in browser.
+The project is forked from codesandbox. We currently use only compiling and transpiling the code runtime in browser.
 
 This project was bootstrapped with
 [Create React App](https://github.com/facebookincubator/create-react-app).
