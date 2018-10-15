@@ -9,6 +9,7 @@ import { getModulePath } from 'common/sandbox/modules';
 import { generateFileFromSandbox } from 'common/templates/configuration/package-json';
 import setupConsole from 'sandbox-hooks/console';
 import setupHistoryListeners from 'sandbox-hooks/url-listeners';
+import Peer from 'simple-peer';
 
 import compile, { getCurrentManager } from './compile';
 
@@ -48,6 +49,7 @@ requirePolyfills().then(() => {
     if (source) {
       if (data.type === 'compile') {
         if (data.version === 3) {
+          debug(data);
           compile(data);
         } else {
           const compileOld = await import('./compile-old').then(x => x.default);
@@ -80,6 +82,45 @@ requirePolyfills().then(() => {
     setupHistoryListeners();
     setupConsole();
   }
+  window.addEventListener(
+    'message',
+    function(event) {
+      // var origin = event.origin || event.originalEvent.origin; // For Chrome, the origin property is in the event.originalEvent object.
+      // if (origin !== /*the container's domain url*/)
+      //     return;
+      const peer = new Peer({ trickle: false });
+
+      peer.on('error', function(err) {
+        console.log('error', err);
+      });
+
+      window.parent.postMessage(
+        { data: { call: 'initializePeerConnection' } },
+        'http://localhost:8080'
+      );
+
+      peer.on('signal', function(data) {
+        debug('SIGNAL', JSON.stringify(data));
+        window.parent.postMessage(
+          { call: 'establishPeerConnection', value: JSON.stringify(data) },
+          'http://localhost:8080'
+        );
+      });
+
+      peer.on('data', function(data) {
+        debug('frame: ' + data);
+      });
+
+      if (
+        typeof event.data == 'object' &&
+        event.data.call == 'establishPeerConnection'
+      ) {
+        peer.signal(JSON.parse(event.data.value));
+        debug(event.data.value);
+      }
+    },
+    false
+  );
   const x = {
     data: {
       view_count: 1642976,
