@@ -41,7 +41,13 @@ requirePolyfills().then(() => {
   registerServiceWorker('/sandbox-service-worker.js', {});
 
   function sendReady() {
-    dispatch({ type: 'initialized' });
+    if (window.location.hash) {
+      const url = window.location.href;
+      const path = url.substring(url.indexOf('#') + 1);
+      dispatch({ type: 'initialized', path });
+    } else {
+      dispatch({ type: 'initialized', path: window.location.pathname });
+    }
   }
 
   async function handleMessage(data, source) {
@@ -56,7 +62,6 @@ requirePolyfills().then(() => {
         }
       } else if (data.type === 'get-transpiler-context') {
         const manager = getCurrentManager();
-
         if (manager) {
           const context = await manager.getTranspilerContext();
           dispatch({
@@ -73,9 +78,9 @@ requirePolyfills().then(() => {
     }
   }
   async function handleSandboxMessage(data, source) {
-    if (source && data.raw) {
+    if (source && data.raw && data.type === 'raw-compile') {
       const moduleObject = {};
-      const id = getId();
+      const id = data.id;
       data = camelizeKeys(data.raw);
       data.npmDependencies = data.npm_dependencies;
 
@@ -108,6 +113,14 @@ requirePolyfills().then(() => {
 
       compile(sandboxData);
     }
+
+    if (source && data.type === 'route-change') {
+      if (data.isHash) {
+        window.location = `#${data.path}`;
+      } else {
+        window.location = data.path;
+      }
+    }
   }
 
   if (!isStandalone) {
@@ -117,6 +130,26 @@ requirePolyfills().then(() => {
 
     setupHistoryListeners();
     setupConsole();
+
+    // Listen to route change and push it to the parent
+    (function(history) {
+      const pushState = history.pushState;
+      history.pushState = function(state) {
+        if (typeof history.onpushstate == 'function') {
+          history.onpushstate({ state: state });
+        }
+        setTimeout(() => {
+          if (window.location.hash) {
+            const url = window.location.href;
+            const path = url.substring(url.indexOf('#') + 1);
+            dispatch({ type: 'route-change', path });
+          } else {
+            dispatch({ type: 'route-change', path: window.location.pathname });
+          }
+        }, 0);
+        return pushState.apply(history, arguments);
+      };
+    })(window.history);
 
     return;
   }
