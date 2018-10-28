@@ -152,7 +152,6 @@ export default async function fetchDependencies(npmDependencies: Dependencies) {
     // New Packager flow
     try {
       const result = await getDependencies(npmDependencies);
-      console.log('TEST', result);
       setScreen({ type: 'loading', text: 'Transpiling Modules...' });
 
       return result;
