@@ -4,15 +4,19 @@
   padding: 0;
   background: #ffffff;
 }
+.cat-wrapper {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}
 
 .cat {
   height: 182px;
   width: 200px;
-  position: absolute;
-  top: 30%;
-  right: calc(65% - 200px);
-  transform: translate(0, -50%);
 }
+
 .cat .ears1 {
   height: 0;
   width: 0;
@@ -277,7 +281,7 @@
 
 .text{
   text-align: center;
-  margin-top: 60%;
+  margin-top: 20px;
   font-size: 30px;
   font-family: "Avenir", Helvetica, Arial, sans-serif;
   color: #945e74;
@@ -289,21 +293,23 @@
 
 
 <div class="loading-screen" class="container">
-  <div class='cat'>
-    <div class='ears1'></div>
-    <div class='head1'>
-      <div class='eyes1'></div>
-      <div class='nose1'></div>
+  <div class="cat-wrapper">
+    <div class='cat'>
+      <div class='ears1'></div>
+      <div class='head1'>
+        <div class='eyes1'></div>
+        <div class='nose1'></div>
+      </div>
+      <div class='body1'>
+        <div class='left-paw1'></div>
+        <div class='right-paw1'></div>
+      </div>
+      <div class='tail1'></div>
+      <div class='PRlaptop'>
+        <div class='PRscreen'></div>
+        <div class='PRkeyboard'></div>
+      </div>
     </div>
-    <div class='body1'>
-      <div class='left-paw1'></div>
-      <div class='right-paw1'></div>
-    </div>
-    <div class='tail1'></div>
-    <div class='PRlaptop'>
-      <div class='PRscreen'></div>
-      <div class='PRkeyboard'></div>
-    </div>
+    <div class="text">Purugly</div>
   </div>
-  <div class="text">Purugly</div>
 </div>
