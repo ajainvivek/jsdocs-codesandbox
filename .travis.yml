@@ -6,7 +6,6 @@ cache: yarn
 
 install:
   - yarn global add lerna jest now
-  - yarn
 
 matrix:
   include:
