@@ -1,11 +1,11 @@
 {
-  "name": "codesandbox",
+  "name": "jsdocs-codesandbox",
   "version": "0.1.0",
   "license": "MIT",
   "private": true,
   "scripts": {
     "build": "NODE_OPTIONS=\"--max-old-space-size=4096\" yarn build:deps && yarn build:prod",
-    "build:prod": "lerna run build  --scope homepage --stream && lerna run build --scope app --stream && gulp",
+    "build:prod": "lerna run build:sandbox --scope app --stream && gulp",
     "build:clean": "lerna run build:clean --scope app --scope homepage && rimraf www",
     "build:deps": "lerna run build:dev --scope codesandbox-api --scope codesandbox-browserfs",
     "start": "yarn build:deps && lerna run start --scope app --stream",

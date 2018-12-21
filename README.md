@@ -1,4 +1,4 @@
-# Purugly Sandbox
+# CodeSandbox Clone
 
 The project is forked from codesandbox. We currently use only compiling and transpiling the code runtime in browser.
 

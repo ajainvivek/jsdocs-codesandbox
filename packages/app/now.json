@@ -1,0 +1,5 @@
+{
+  "version": 2,
+  "alias": "jsdocs-codesandbox",
+  "builds": [{ "src": "dist", "use": "@now/static" }]
+}
