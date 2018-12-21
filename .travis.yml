@@ -6,11 +6,11 @@ cache: yarn
 
 install:
   - yarn global add lerna jest now
-  - lerna bootstrap
+  - yarn
 
 matrix:
   include:
-  - name: Playground UI Pipeline
+  - name: Codesandbox Pipeline
     env: PACKAGE_LOCATION=packages/app PACKAGE_NAME=jsdocs-codesandbox
 
 script:
