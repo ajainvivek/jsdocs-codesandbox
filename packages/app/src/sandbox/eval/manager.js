@@ -526,9 +526,12 @@ export default class Manager {
           delete this.cachedPaths[dirredPath][path];
         }
 
-        let connectedPath = /^(\w|@\w)/.test(shimmedPath)
-          ? pathUtils.join('/node_modules', shimmedPath)
-          : pathUtils.join(pathUtils.dirname(currentPath), shimmedPath);
+        let connectedPath = shimmedPath;
+        if (connectedPath.indexOf('/node_modules') !== 0) {
+          connectedPath = /^(\w|@\w)/.test(shimmedPath)
+            ? pathUtils.join('/node_modules', shimmedPath)
+            : pathUtils.join(pathUtils.dirname(currentPath), shimmedPath);
+        }
 
         const isDependency = connectedPath.includes('/node_modules/');
 
